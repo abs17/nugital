@@ -23,16 +23,17 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install StaticCrypt
-        run: npm install -g staticcrypt
+      - name: Install dependencies
+        run: |
+          npm install -g static-crypt
 
       - name: Generate protected HTML
         env:
           STATICCRYPT_PASSWORD: ${{ secrets.STATICCRYPT_PASSWORD }}
         run: |
           mkdir -p ./dist
-          staticcrypt index.html -p "$STATICCRYPT_PASSWORD" -o ./dist/index.html
-          # Copie les autres fichiers si nécessaire (CSS, JS, etc.)
+          static-crypt index.html -p "$STATICCRYPT_PASSWORD" -o ./dist/index.html
+          # Copie les autres fichiers si nécessaire
           cp -r 03355b17f28b2816789cca747312d05c748d2777 ./dist/ 2>/dev/null || true
 
       - name: Deploy to gh-pages
