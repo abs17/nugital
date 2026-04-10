@@ -35,12 +35,17 @@ jobs:
           STATICCRYPT_PASSWORD: ${{ secrets.STATICCRYPT_PASSWORD }}
         run: |
           echo "🔐 Generating protected HTML with staticrypt..."
-          staticrypt index.html -p "$STATICCRYPT_PASSWORD" --short -d .
+          # Remove any existing encrypted directory
+          rm -rf encrypted/
+          # Generate protected version (will create encrypted/ directory by default)
+          staticrypt index.html -p "$STATICCRYPT_PASSWORD" --short
           echo "✅ Protected HTML generated!"
+          echo "Checking generated files:"
           ls -lah encrypted/
-          cp encrypted/index.html index.html
-          rm -rf encrypted
-          echo "✅ Index.html updated with protection"
+          # Replace original index.html with protected version
+          mv encrypted/index.html index.html
+          rm -rf encrypted/
+          echo "✅ Index.html updated with protection!"
 
       - name: Commit and push protected version
         run: |
