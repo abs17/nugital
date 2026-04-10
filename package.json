@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Stratégie Master Partner SYSCALL Égypte 2026 - Protégée",
   "scripts": {
-    "protect": "staticcrypt index.html -p 'YOUR_PASSWORD_HERE' -o index-protected.html",
-    "protect:interactive": "staticcrypt index.html -o index-protected.html"
+    "protect": "staticrypt index.html -p 'YOUR_PASSWORD_HERE' -o index-protected.html",
+    "protect:interactive": "staticrypt index.html -o index-protected.html"
   },
   "devDependencies": {
-    "staticcrypt": "^2.5.0"
+    "staticrypt": "^2.3.0"
   }
 }
