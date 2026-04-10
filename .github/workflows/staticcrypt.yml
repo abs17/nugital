@@ -3,57 +3,78 @@ name: StaticCrypt Protection
 on:
   push:
     branches: [ develop, main ]
+    paths:
+      - 'index.html'
+      - '.github/workflows/staticcrypt.yml'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   protect:
     runs-on: ubuntu-latest
     
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
     steps:
-      - name: Checkout code
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: |
-          npm install -g staticrypt
+      - name: Install staticrypt
+        run: npm install -g staticrypt
 
       - name: Generate protected HTML
         env:
           STATICCRYPT_PASSWORD: ${{ secrets.STATICCRYPT_PASSWORD }}
         run: |
-          echo "🔐 Generating protected HTML with staticrypt..."
+          echo "🔐 Starting StaticCrypt protection..."
+          echo "✓ Password length: ${#STATICCRYPT_PASSWORD} characters"
+          
           # Remove any existing encrypted directory
-          rm -rf encrypted/
-          # Generate protected version (will create encrypted/ directory by default)
-          staticrypt index.html -p "$STATICCRYPT_PASSWORD" --short
-          echo "✅ Protected HTML generated!"
-          echo "Checking generated files:"
-          ls -lah encrypted/
-          # Replace original index.html with protected version
-          mv encrypted/index.html index.html
-          rm -rf encrypted/
-          echo "✅ Index.html updated with protection!"
+          rm -rf encrypted/ .staticrypt.json
+          
+          # Generate protected version
+          staticrypt index.html -p "$STATICCRYPT_PASSWORD" --short 2>&1
+          
+          if [ -f "encrypted/index.html" ]; then
+            echo "✅ Protected HTML generated successfully"
+            ls -lah encrypted/
+            # Replace original with protected version
+            cp encrypted/index.html index.html
+            rm -rf encrypted/
+            echo "✅ index.html is now protected!"
+          else
+            echo "❌ ERROR: encrypted/index.html not found!"
+            ls -la
+            exit 1
+          fi
 
       - name: Commit and push protected version
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git pull origin main --rebase || true
-          git add index.html
-          git commit -m "chore: update protected version with latest content" || echo "No changes to commit"
-          git push origin main
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if there are changes
+          if [ -n "$(git status --porcelain)" ]; then
+            git add index.html .staticrypt.json
+            git commit -m "chore: protect with staticrypt [skip ci]"
+            
+            # Ensure we have latest before pushing
+            git fetch origin main
+            git rebase origin/main || git rebase --abort
+            
+            git push origin main --force-with-lease
+            echo "✅ Protected version pushed to main!"
+          else
+            echo "ℹ️  No changes in index.html"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
