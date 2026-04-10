@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,19 +35,19 @@ jobs:
           STATICCRYPT_PASSWORD: ${{ secrets.STATICCRYPT_PASSWORD }}
         run: |
           echo "🔐 Generating protected HTML with staticrypt..."
-          staticrypt index.html -p "$STATICCRYPT_PASSWORD" -d ./dist --short
+          staticrypt index.html -p "$STATICCRYPT_PASSWORD" --short -d .
           echo "✅ Protected HTML generated!"
-          echo "Files in dist:"
-          ls -lah ./dist/
-          echo "Checking protected HTML:"
-          head -30 ./dist/index.html | grep -E "staticrypt|Protected"
-          # Copie les autres fichiers si nécessaire
-          cp -r 03355b17f28b2816789cca747312d05c748d2777 ./dist/ 2>/dev/null || true
+          ls -lah encrypted/
+          cp encrypted/index.html index.html
+          rm -rf encrypted
+          echo "✅ Index.html updated with protection"
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          force_orphan: true
-          cname: abs17.github.io
+      - name: Commit and push protected version
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add index.html
+          git commit -m "chore: update protected version with latest content" || echo "No changes to commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
