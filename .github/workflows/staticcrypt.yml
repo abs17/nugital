@@ -32,7 +32,12 @@ jobs:
           STATICCRYPT_PASSWORD: ${{ secrets.STATICCRYPT_PASSWORD }}
         run: |
           mkdir -p ./dist
+          echo "🔐 Generating protected HTML with staticrypt..."
           staticrypt index.html -p "$STATICCRYPT_PASSWORD" -o ./dist/index.html
+          echo "✅ Protected HTML generated!"
+          ls -lah ./dist/
+          echo "File content check:"
+          head -20 ./dist/index.html
           # Copie les autres fichiers si nécessaire
           cp -r 03355b17f28b2816789cca747312d05c748d2777 ./dist/ 2>/dev/null || true
 
@@ -41,3 +46,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          force_orphan: true
+          cname: abs17.github.io
