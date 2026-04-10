@@ -1,0 +1,42 @@
+name: StaticCrypt Protection
+
+on:
+  push:
+    branches: [ develop, main ]
+  workflow_dispatch:
+
+jobs:
+  protect:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install StaticCrypt
+        run: npm install -g staticcrypt
+
+      - name: Generate protected HTML
+        env:
+          STATICCRYPT_PASSWORD: ${{ secrets.STATICCRYPT_PASSWORD }}
+        run: |
+          mkdir -p ./dist
+          staticcrypt index.html -p "$STATICCRYPT_PASSWORD" -o ./dist/index.html
+          # Copie les autres fichiers si nécessaire (CSS, JS, etc.)
+          cp -r 03355b17f28b2816789cca747312d05c748d2777 ./dist/ 2>/dev/null || true
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist

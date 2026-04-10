@@ -1,0 +1,28 @@
+# Node modules
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build & Deploy directories
+dist/
+build/
+.out/
+
+# Protected HTML (générée automatiquement)
+index-protected.html
+*-protected.html
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
