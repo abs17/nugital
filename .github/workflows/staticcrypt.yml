@@ -31,13 +31,13 @@ jobs:
         env:
           STATICCRYPT_PASSWORD: ${{ secrets.STATICCRYPT_PASSWORD }}
         run: |
-          mkdir -p ./dist
           echo "🔐 Generating protected HTML with staticrypt..."
-          staticrypt index.html -p "$STATICCRYPT_PASSWORD" -o ./dist/index.html
+          staticrypt index.html -p "$STATICCRYPT_PASSWORD" -d ./dist --short
           echo "✅ Protected HTML generated!"
+          echo "Files in dist:"
           ls -lah ./dist/
-          echo "File content check:"
-          head -20 ./dist/index.html
+          echo "Checking protected HTML:"
+          head -30 ./dist/index.html | grep -E "staticrypt|Protected"
           # Copie les autres fichiers si nécessaire
           cp -r 03355b17f28b2816789cca747312d05c748d2777 ./dist/ 2>/dev/null || true
 
