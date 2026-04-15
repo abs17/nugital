@@ -555,12 +555,12 @@
                 </div>
               </div>
             </div>
-            <div class="rounded-xl p-4 risk-med" style="background: rgba(245,158,11,0.05);">
+            <div class="rounded-xl p-4 risk-low" style="background: rgba(16,185,129,0.05);">
               <div class="flex items-start gap-3">
-                <span class="badge-orange text-xs px-2 py-0.5 rounded-full shrink-0 mt-0.5">IMPORTANT</span>
+                <span class="badge-green text-xs px-2 py-0.5 rounded-full shrink-0 mt-0.5">LEVÉ ✅</span>
                 <div>
-                  <div class="font-semibold text-sm text-white mb-1">NTRA Type Approval RF probable</div>
-                  <div class="text-xs text-slate-400">Les systèmes d'appel sans-fil SYSCALL utilisent des fréquences radio (433 MHz typiquement). L'NTRA (National Telecom Regulatory Authority) impose une homologation préalable pour tout équipement RF importé commercialement en Égypte. Délai : 2-4 mois, coût : variable.</div>
+                  <div class="font-semibold text-sm text-white mb-1">Bande 433 MHz autorisée sans licence en Égypte (source NTRA)</div>
+                  <div class="text-xs text-slate-400">Confirmé officiellement : la bande <strong class="text-white">433,05 – 434,79 MHz</strong> est classée en Short-Range Devices (SRD) par la NTRA et utilisable <strong class="text-white">sans licence</strong> (puissance max 10 mW e.r.p., duty cycle ≤ 10 %, standard EN 300 220). Réf. <em>Radio Spectrum Guidelines – SRD, v1.3 nov. 2024</em>, Tableau 1 p. 8-9 et Tableau 3 p. 10 (alarmes 433,9 MHz). Les produits SYSCALL Global (répéteurs SRT-8200, boutons ST-500, pagers) opèrent sur 433,42 / 433,92 MHz — pleinement conformes. Document officiel : <a href="https://www.tra.gov.eg/wp-content/uploads/2025/08/EGY-NTRA-November-2024-SRD_English.pdf" target="_blank" rel="noopener" class="text-syscall-teal underline">tra.gov.eg – SRD EN (nov. 2024)</a>.</div>
                 </div>
               </div>
             </div>
@@ -1151,8 +1151,8 @@ Merci 🙏</div>
                   <span class="text-sm text-slate-300">Vérifier le code HS douanier exact des produits SYSCALL</span>
                 </label>
                 <label class="check-item flex items-start gap-3 cursor-pointer">
-                  <input type="checkbox" class="mt-0.5 shrink-0"/>
-                  <span class="text-sm text-slate-300">Renseignement NTRA : type approval RF nécessaire ?</span>
+                  <input type="checkbox" class="mt-0.5 shrink-0" checked/>
+                  <span class="text-sm text-slate-300"><s>Renseignement NTRA : type approval RF nécessaire ?</s> → <strong class="text-syscall-teal">Confirmé : bande 433 MHz autorisée sans licence</strong> (NTRA SRD v1.3, nov. 2024)</span>
                 </label>
                 <label class="check-item flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" class="mt-0.5 shrink-0"/>
@@ -1288,12 +1288,12 @@ Merci 🙏</div>
               </div>
             </div>
 
-            <div class="rounded-xl p-4 risk-med" style="background: rgba(245,158,11,0.05);">
+            <div class="rounded-xl p-4 risk-low" style="background: rgba(16,185,129,0.05);">
               <div class="flex items-start gap-3">
-                <span class="badge-orange text-xs px-2 py-0.5 rounded-full shrink-0">MOYEN</span>
+                <span class="badge-green text-xs px-2 py-0.5 rounded-full shrink-0">LEVÉ ✅</span>
                 <div>
-                  <div class="font-semibold text-sm text-white mb-1">NTRA refuse le type approval RF pour les produits SYSCALL</div>
-                  <div class="text-xs text-slate-400">Si les fréquences utilisées ne sont pas homologuées en Égypte. Mitigation : Vérifier en amont avec SYSCALL si des certifications CE/FCC existent (souvent suffisantes), ou produits Wi-Fi uniquement.</div>
+                  <div class="font-semibold text-sm text-white mb-1">Risque NTRA / fréquences RF écarté</div>
+                  <div class="text-xs text-slate-400">La NTRA autorise explicitement la bande <strong class="text-white">433,05 – 434,79 MHz</strong> sans licence (cat. SRD, doc officiel nov. 2024). Les systèmes SYSCALL Global (433,42 / 433,92 MHz, ≤ 10 mW) respectent les spécifications techniques (EN 300 220, duty cycle ≤ 10 %). Aucun type approval bloquant attendu — conformité déjà démontrée par la présence d'APIS Integrated Solutions sur le marché. <a href="https://www.tra.gov.eg/wp-content/uploads/2025/08/EGY-NTRA-November-2024-SRD_English.pdf" target="_blank" rel="noopener" class="text-syscall-teal underline">Source NTRA</a>.</div>
                 </div>
               </div>
             </div>
